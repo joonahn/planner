@@ -1,0 +1,18 @@
+<form method="POST" action="{% url 'login' %}" class="sign-in-form">
+    {% csrf_token %}
+    <h2 class="sub-title"> 로그인 </h2>
+    <!-- <input type="hidden" name="next" value="">
+  {{form.as_p}} >> 기본으로 내장된 로그인 폼을 아래와 같이 커스터마이징 한다-->
+    <div class="form-group">
+        <label for="{{ form.username.id_for_label }}">닉네임</label>
+        <input class="form-control" id="{{ form.username.id_for_label }}" maxlength="15"
+            name="username" type="text" />
+    </div>
+    <div class="form-group">
+        <label for="{{ form.password.id_for_label }}">패스워드</label>
+        <input class="form-control" id="{{ form.password.id_for_label }}" maxlength="120"
+            name="password" type="password" />
+    </div>
+    <input type="submit" class="save btn btn-success" value="로그인">
+    <input type="hidden" name="next" value="">
+</form>
