@@ -40,7 +40,10 @@ class Planner extends Component {
     async reloadWeeklyPlans() {
         if (this.state.weekDays.length >= 2) {
             const {0: first, length: l, [l-1] : last} = this.state.weekDays
-            const res = await searchPlannerDataByRange(first, last, 'weekly');
+            const res = await searchPlannerDataByRange(first, last, 'weekly')
+            if (!res) {
+                this.props.logout()
+            } 
             this.setState({
                 weeklyPlans: res
             });
@@ -48,7 +51,10 @@ class Planner extends Component {
     }
 
     async reloadSelectedPlans(dateStr) {
-        const res = await searchPlannerDataByDate(dateStr, 'daily');
+        const res = await searchPlannerDataByDate(dateStr, 'daily')
+        if (!res) {
+            this.props.logout()
+        }
         this.setState({
             selectedDayPlans: res
         });

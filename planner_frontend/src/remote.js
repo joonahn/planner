@@ -21,6 +21,8 @@ export async function searchPlannerDataByRange(dateFrom, dateTo, planType) {
         .then(res => {
             if (res.status === 200) {
                 return res.json().then((res) => sortPlanDataByOrder(res))
+            } else if (res.status === 403) {
+                return null
             }
             return []
         })
@@ -32,6 +34,8 @@ export async function searchPlannerDataByDate(dateStr, planType) {
         .then(res => {
             if (res.status === 200) {
                 return res.json().then((res) => sortPlanDataByOrder(res))
+            } else if (res.status === 403) {
+                return null
             }
             return []
         })
