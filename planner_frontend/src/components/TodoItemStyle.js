@@ -1,20 +1,13 @@
 const style = {}
 
-style.todoItem = {
+style.todoItem = (draggableStyle) => ({
     background: '#f7f7f7',
     borderRadius: 0.2,
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    marginTop: 10,
-    marginBottom: 10,
     width: 'auto',
-    maxWidth: 720,
-}
-
-style.container = {
-    paddingLeft: 10,
-    paddingRight: 10,
-}
+    marginTop: 0,
+    marginBottom: 10,
+    ...draggableStyle,
+})
 
 style.column = {
     paddingTop: 3,

@@ -4,6 +4,7 @@ import AddTodoItem from './AddTodoItem'
 import Moment from 'moment'
 import { Droppable } from 'react-beautiful-dnd'
 import { Accordion } from 'semantic-ui-react';
+import style from './PlanListStyle'
 
 
 class PlanList extends Component {
@@ -55,7 +56,7 @@ class PlanList extends Component {
         const visibility = (!!this.props.selectedDay) || (this.props.planType !== 'daily') ? 'visible' : 'hidden'
 
         return (
-            <div style={{visibility: visibility}}>
+            <div style={{...style.container, visibility: visibility}}>
                 <Accordion>
                     <Accordion.Title content={this.props.planType} active={this.state.accordionOpened} onClick={this.handleClick}/>
                     <Accordion.Content active={this.state.accordionOpened}>

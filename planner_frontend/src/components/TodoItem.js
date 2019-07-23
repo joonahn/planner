@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Checkbox, Icon, Grid, Form, Input} from 'semantic-ui-react'
+import {Checkbox, Icon, Grid, Form, Input, Ref} from 'semantic-ui-react'
 import {Draggable} from 'react-beautiful-dnd'
 import style from './TodoItemStyle'
 
@@ -110,27 +110,20 @@ class TodoItem extends Component {
                 isDragDisabled={this.props.planId<0}>
                 {
                     (provided) => (
-                        <div
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                            ref={provided.innerRef}
-                            >
-                            <div
-                                style={style.container}>
-                                <Grid celled style={style.todoItem} verticalAlign="middle" >
-                                    <Grid.Row>
-                                        <Grid.Column width={12} textAlign='justified' style={style.column}>
-                                            <this.CheckboxOrEditbox isEditActivated={this.state.isEditActivated}/>
-                                        </Grid.Column>
-                                        <Grid.Column width={4} textAlign='center' style={style.column}>
-                                            <Icon link onClick={() => this.props.deleteTodo(this.props.planId)} name='close' />
-                                            <Icon link onClick={this.onEditIconClick} name='pencil' />
-                                            <Icon link fitted onClick={() => this.props.onDuplicate(this.props.text, this.props.checked, this.props.index + 1)} name='copy' />
-                                        </Grid.Column>
-                                    </Grid.Row>
-                                </Grid>
-                            </div>
-                        </div>
+                        <Ref innerRef={provided.innerRef} >
+                            <Grid celled {...provided.draggableProps} {...provided.dragHandleProps} style={style.todoItem(provided.draggableProps.style)} verticalAlign="middle" >
+                                <Grid.Row>
+                                    <Grid.Column width={12} textAlign='justified' style={style.column}>
+                                        <this.CheckboxOrEditbox isEditActivated={this.state.isEditActivated}/>
+                                    </Grid.Column>
+                                    <Grid.Column width={4} textAlign='center' style={style.column}>
+                                        <Icon link onClick={() => this.props.deleteTodo(this.props.planId)} name='close' />
+                                        <Icon link onClick={this.onEditIconClick} name='pencil' />
+                                        <Icon link fitted onClick={() => this.props.onDuplicate(this.props.text, this.props.checked, this.props.index + 1)} name='copy' />
+                                    </Grid.Column>
+                                </Grid.Row>
+                            </Grid>
+                        </Ref>
                     )
                 }
 
