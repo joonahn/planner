@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import DayPicker from './DayPicker';
 import PlanListGroup from './PlanListGroup';
 import Moment from 'moment'
-import {searchPlannerDataByDate, deleteTodoItem} from '../remote'
+import {searchPlannerDataByDate, deleteTodoItem, changeOrders} from '../remote'
 import {searchPlannerDataByRange} from '../remote'
 import {changeOrder} from '../remote'
 import {addTodoItem} from '../remote'
@@ -64,27 +64,13 @@ class Planner extends Component {
         console.log("syncCurrentOrder!")
         console.log(planType)
         const targetArray = this.state[getObjectNameByPlanType(planType)]
-        targetArray.map((value, index) => {
-            if(value.id >= 0) {
-                return changeOrder(value.id, index)
-            } else {
-                this.addDelayedOperation({
-                    method: 'changeOrder',
-                    planId: value.id,
-                    index: index,
-                })
-                return null
-            }
-        })
-        // return Promise.all(targetArray.map((value, index) => {
-        //     return changeOrder(value.id, index)
-        // })).then(() => {
-        //     if (planType === 'daily') {
-        //         return this.reloadSelectedPlans(this.state.selectedDay)
-        //     } else if (planType === 'weekly') {
-        //         return this.reloadWeeklyPlans()
-        //     }
-        // })
+        return changeOrders(
+            targetArray.map((value, index) => 
+                ({
+                    id: value.id,
+                    order: index
+                }))
+        )
     }
 
     generateTempId() {

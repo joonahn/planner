@@ -80,6 +80,19 @@ export async function changeOrder(planId, order) {
     })
 }
 
+export async function changeOrders(orderDataList) {
+    const url = PREFIX + '/planner_data/change_order'
+    return fetch(url, {
+        method: 'POST',
+        body: JSON.stringify(orderDataList),
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+    })
+}
+
 export async function changePlanType(planId, planType, dateStr) {
     const url = PREFIX + '/planner_data/' + planId + '/'
     const formData = new FormData()

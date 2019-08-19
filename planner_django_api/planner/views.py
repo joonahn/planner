@@ -1,5 +1,5 @@
 from planner.models import PlannerData
-from planner.serializers import PlannerDataSerializer, UserSerializer
+from planner.serializers import PlannerDataSerializer, UserSerializer, ReorderPlannerDataSerializer
 from planner.permissions import IsOwner
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
@@ -10,7 +10,9 @@ from rest_framework import views
 from rest_framework import authentication
 from rest_framework import permissions
 from rest_framework.response import Response
+from rest_framework.parsers import JSONParser
 from rest_framework.reverse import reverse
+from rest_framework import status
 from rest_framework.decorators import action, api_view
 from datetime import datetime
  
@@ -94,3 +96,14 @@ class PlannerDataViewSet(viewsets.ModelViewSet):
             plans = PlannerData.objects.filter(**filter_dict)
         serializer = self.get_serializer(plans, many=True)
         return Response(serializer.data)
+
+    @action(methods=['POST'], detail=False)
+    def change_order(self, request):
+        data = JSONParser().parse(request)
+        serializer = ReorderPlannerDataSerializer(data=data, many=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response("OK")
+        else:
+            return Response(serializer.errors,
+                            status=status.HTTP_400_BAD_REQUEST)

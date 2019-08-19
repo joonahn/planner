@@ -15,3 +15,10 @@ class PlannerDataSerializer(serializers.ModelSerializer):
         model = PlannerData
         fields = ("id", "plan_date", "finish_timestamp", "create_timestamp",
                   "order", "is_finished", "content", "plan_type", "owner",)
+
+
+class ReorderPlannerDataSerializer(serializers.ModelSerializer):
+    owner = serializers.ReadOnlyField(source='owner.username')
+    class Meta:
+        model = PlannerData
+        fields = ("id", "order",)
