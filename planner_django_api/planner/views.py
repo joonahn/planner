@@ -103,7 +103,7 @@ class PlannerDataViewSet(viewsets.ModelViewSet):
         serializer = ReorderPlannerDataSerializer(data=data, many=True)
         if serializer.is_valid():
             for item in serializer.validated_data:
-                PlannerData.object.filter(id=item['id']).update(order=item['order'])
+                PlannerData.objects.filter(id=item['id']).update(order=item['order'])
             return Response("OK")
         else:
             return Response(serializer.errors,
