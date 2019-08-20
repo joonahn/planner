@@ -81,9 +81,9 @@ export async function changeOrder(planId, order) {
 }
 
 export async function changeOrders(orderDataList) {
-    const url = PREFIX + '/planner_data/change_order'
+    const url = PREFIX + '/planner_data/change_order/'
     return fetch(url, {
-        method: 'POST',
+        method: 'PATCH',
         body: JSON.stringify(orderDataList),
         headers: {
             'Accept': 'application/json',

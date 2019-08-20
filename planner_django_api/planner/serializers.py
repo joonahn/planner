@@ -16,9 +16,6 @@ class PlannerDataSerializer(serializers.ModelSerializer):
         fields = ("id", "plan_date", "finish_timestamp", "create_timestamp",
                   "order", "is_finished", "content", "plan_type", "owner",)
 
-
-class ReorderPlannerDataSerializer(serializers.ModelSerializer):
-    owner = serializers.ReadOnlyField(source='owner.username')
-    class Meta:
-        model = PlannerData
-        fields = ("id", "order",)
+class ReorderPlannerDataSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    order = serializers.IntegerField()

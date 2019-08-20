@@ -97,12 +97,13 @@ class PlannerDataViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(plans, many=True)
         return Response(serializer.data)
 
-    @action(methods=['POST'], detail=False)
+    @action(methods=['patch'], detail=False)
     def change_order(self, request):
         data = JSONParser().parse(request)
         serializer = ReorderPlannerDataSerializer(data=data, many=True)
         if serializer.is_valid():
-            serializer.save()
+            for item in serializer.validated_data:
+                PlannerData.object.filter(id=item['id']).update(order=item['order'])
             return Response("OK")
         else:
             return Response(serializer.errors,

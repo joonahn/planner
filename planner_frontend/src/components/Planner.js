@@ -262,7 +262,7 @@ class Planner extends Component {
         const destClone = sourceArray === destArray ? sourceClone : Array.from(destArray)
         const [removed] = sourceClone.splice(source.index, 1)
         removed.plan_type = destination.planType
-        removed.plan_date = this.state.selectedDay
+        removed.plan_date = this.state.selectedDay === null ? Moment(new Date()).format("YYYY-MM-DD") : this.state.selectedDay
         destClone.splice(destination.index, 0, removed)
         const result = {}
         result[getObjectNameByPlanType(source.planType)] = setOrderByItsIndex(sourceClone)
