@@ -64,10 +64,9 @@ class TodoItem extends Component {
         if (isEditActivated) {
             return (
                 <Form>
-                    <Form.Group style={{marginBottom:0}} >
+                    <Form.Group style={{marginBottom:0, display: 'flex', alignItems:'center' }} >
                         <Form.Field >
                             <Checkbox 
-                                style={{display:'flex', alignItems:'center'}}
                                 onChange = {
                                     () => this.props.onSomethingChange(
                                         this.props.planId,
@@ -76,7 +75,7 @@ class TodoItem extends Component {
                                 }
                                 checked={Number(this.props.checked) === 1}/>
                         </Form.Field>
-                        <Form.Field style={{width: '100%'}}>
+                        <Form.Field style={{flexGrow: '1'}}>
                             <Input
                                 fluid
                                 value={this.state.inputTodoValue}

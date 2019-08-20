@@ -297,13 +297,19 @@ class Planner extends Component {
         })
     }
 
-    componentDidMount() {
+    setCurrentWeek() {
         const startOfWeek = Moment(new Date()).startOf('week')
         const weekOffset = [...Array(7).keys()]
         const weekDays = weekOffset.map((value, idx) => startOfWeek.clone().add(value, 'd').format("YYYY-MM-DD"))
-        this.setState({weekDays}, () => {
+        this.setState({
+            weekDays
+        }, () => {
             this.reloadWeeklyPlans()
         })
+    }
+
+    componentDidMount() {
+        this.setCurrentWeek()
     }
 
     render() {
@@ -316,6 +322,7 @@ class Planner extends Component {
                     weekDays={this.state.weekDays} 
                     selectedDay={this.state.selectedDay}
                     onSelect={this.handleSelectDate.bind(this)}
+                    setCurrentWeek={this.setCurrentWeek.bind(this)}
                     onWeekChange={this.handleWeekChange.bind(this)}/>
                 <PlanListGroup
                     selectedDay={this.state.selectedDay}
