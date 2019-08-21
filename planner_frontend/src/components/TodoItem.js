@@ -101,6 +101,9 @@ class TodoItem extends Component {
         }
     }
     render() {
+        const isDuplicableOnDailyPlan = ((!!this.props.selectedDay) && (this.props.planType !== 'daily'))
+        const visibility = isDuplicableOnDailyPlan ? {} : {display:'none'}
+        
         return (
             <Draggable 
                 key={this.props.planId}
@@ -117,8 +120,12 @@ class TodoItem extends Component {
                                     </Grid.Column>
                                     <Grid.Column width={4} textAlign='center' style={style.column}>
                                         <Icon link onClick={() => this.props.deleteTodo(this.props.planId)} name='close' />
-                                        <Icon link onClick={this.onEditIconClick} name='pencil' />
-                                        <Icon link fitted onClick={() => this.props.onDuplicate(this.props.text, this.props.checked, this.props.index + 1)} name='copy' />
+                                        <Icon link fitted={!isDuplicableOnDailyPlan} onClick={this.onEditIconClick} name='pencil' />
+                                        <Icon link 
+                                            fitted={isDuplicableOnDailyPlan} 
+                                            onClick={() => this.props.onDuplicateOnDailyPlan(this.props.text, this.props.checked)} 
+                                            name='calendar plus' 
+                                            style={visibility}/>
                                     </Grid.Column>
                                 </Grid.Row>
                             </Grid>

@@ -29,16 +29,21 @@ class PlanList extends Component {
             this.props.addTodo(selectedDay, this.props.planType, text)
         }
         const deleteTodo = (planId) => {
-            this.props.deleteTodo(this.props.selectedDay, this.props.planType, planId)
+            this.props.deleteTodo(this.props.planType, planId)
         }
         const onSomethingChange = (planId, text, checked) => {
-            this.props.onSomethingChange(this.props.selectedDay, this.props.planType, planId, text, checked)
+            this.props.onSomethingChange(this.props.planType, planId, text, checked)
         }
         const onDuplicate = (text, checked, order) => {
             const selectedDay = (this.props.selectedDay == null) ?
                 Moment(new Date()).format("YYYY-MM-DD") :
                 this.props.selectedDay
             this.props.handleDuplicate(selectedDay, this.props.planType, text, checked, order)
+        }
+        const onDuplicateOnDailyPlan = (text, checked) => {
+            if (this.props.selectedDay == null)
+                return
+            this.props.handleDuplicate(this.props.selectedDay, 'daily', text, checked, null)
         }
         const todoItems = this.props.plans.map((value, index) => 
                 <TodoItem 
@@ -48,8 +53,11 @@ class PlanList extends Component {
                     checked={value.is_finished}
                     deleteTodo={deleteTodo}
                     onSomethingChange={onSomethingChange}
+                    onDuplicateOnDailyPlan={onDuplicateOnDailyPlan}
                     onDuplicate={onDuplicate}
                     index={index}
+                    planType={this.props.planType}
+                    selectedDay={this.props.selectedDay}
                     />
         )
 

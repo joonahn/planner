@@ -4,7 +4,6 @@ import PlanListGroup from './PlanListGroup';
 import Moment from 'moment'
 import {searchPlannerDataByDate, deleteTodoItem, changeOrders} from '../remote'
 import {searchPlannerDataByRange} from '../remote'
-import {changeOrder} from '../remote'
 import {addTodoItem} from '../remote'
 import {changeTodoItem} from '../remote'
 import {changePlanType} from '../remote'
@@ -98,8 +97,6 @@ class Planner extends Component {
 
     runOperations(operation) {
         switch(operation.method) {
-            case 'changeOrder':
-                return changeOrder(operation.planId, operation.order)
             case 'delete':
                 return deleteTodoItem(operation.planId)
             case 'change':
@@ -177,8 +174,6 @@ class Planner extends Component {
     }
 
     handleDuplicate(dateStr, planType, text, checked, order) {
-        console.log("handleDuplicate")
-        console.log("order: " + order)
         // Add Item to plans
         const newItem = {
             id: this.generateTempId(),
@@ -190,15 +185,22 @@ class Planner extends Component {
         }
         const stateTransition = {}
         const newPlans = Array.from(this.state[getObjectNameByPlanType(planType)])
+        if (order === null) {
+            newItem.order = newPlans.length
+            order = newPlans.length
+        }
         newPlans.splice(order, 0, newItem)
         stateTransition[getObjectNameByPlanType(planType)] = newPlans
         this.setState(stateTransition, () => {
-            Promise.all(this.state[getObjectNameByPlanType(planType)].map((value, index) => {
-                if (index > order) {
-                    return changeOrder(value.id, index)
-                }
-                return null
-            })).then(() => {
+            changeOrders(
+                this.state[getObjectNameByPlanType(planType)]
+                    .map((value, index) => (
+                    ({
+                        id: value.id,
+                        order: index
+                    })))
+                    .filter((_, index) => index > order)
+                ).then(() => {
                 addTodoItem(dateStr, planType, text, order).then((res) => {
                     this.replaceTempId(newItem.id, res.id)
                 })
@@ -206,7 +208,7 @@ class Planner extends Component {
         })
     }
 
-    handleDelete(dateStr, planType, planId) {
+    handleDelete(planType, planId) {
         const nextState = {}
         const newPlans = this.state[getObjectNameByPlanType(planType)].filter( value => value.id !== planId)
         nextState[getObjectNameByPlanType(planType)] = newPlans
@@ -222,7 +224,7 @@ class Planner extends Component {
         })
     }
 
-    handleChange(dateStr, planType, planId, text, checked) {
+    handleChange(planType, planId, text, checked) {
         const nextState = {}
         const newPlans = this.state[getObjectNameByPlanType(planType)].map(value => {
             if (value.id === planId) {

@@ -34,7 +34,7 @@ class PlanListGroup extends Component {
                 onDragEnd = {onDragEnd}>
                 <PlanList
                     planType = 'weekly'
-                    selectedDay={this.props.startOfWeek}
+                    selectedDay={this.props.selectedDay}
                     plans={this.props.weeklyPlans}
                     addTodo={this.props.addTodo}
                     deleteTodo={this.props.deleteTodo}
