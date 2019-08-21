@@ -49,7 +49,8 @@ class PlanListGroup extends Component {
                     deleteTodo={this.props.deleteTodo}
                     handleReorder={this.props.handleReorder}
                     handleDuplicate={this.props.handleDuplicate}
-                    onSomethingChange={this.props.onSomethingChange}/>
+                    onSomethingChange={this.props.onSomethingChange}
+                    handleChangePlanDate={this.props.handleChangePlanDate} />
             </DragDropContext>
             // <ul style={{visibility: visibility}}>
             //     {todoItems}

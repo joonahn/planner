@@ -7,6 +7,7 @@ import {searchPlannerDataByRange} from '../remote'
 import {addTodoItem} from '../remote'
 import {changeTodoItem} from '../remote'
 import {changePlanType} from '../remote'
+import {changePlanDate} from '../remote'
 import 'semantic-ui-css/semantic.min.css'
 import TitleBar from './TitleBar';
 
@@ -299,6 +300,12 @@ class Planner extends Component {
         })
     }
 
+    handleChangePlanDate(planId, dateStr) {
+        changePlanDate(planId, dateStr).then(() => {
+            this.reloadSelectedPlans(this.state.selectedDay)
+        })
+    }
+
     setCurrentWeek() {
         const startOfWeek = Moment(new Date()).startOf('week')
         const weekOffset = [...Array(7).keys()]
@@ -334,6 +341,7 @@ class Planner extends Component {
                     addTodo={this.handleAddTodo.bind(this)}
                     deleteTodo={this.handleDelete.bind(this)}
                     handleReorder={this.handleReorder.bind(this)}
+                    handleChangePlanDate={this.handleChangePlanDate.bind(this)}
                     handleDuplicate={this.handleDuplicate.bind(this)}
                     onSomethingChange={this.handleChange.bind(this)}/>
             </div>

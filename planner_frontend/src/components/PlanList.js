@@ -45,6 +45,10 @@ class PlanList extends Component {
                 return
             this.props.handleDuplicate(this.props.selectedDay, 'daily', text, checked, null)
         }
+        const onPutOff = (planId) => {
+            const nextDay = Moment(this.props.selectedDay).add(1, 'days').format("YYYY-MM-DD")
+            this.props.handleChangePlanDate(planId, nextDay)
+        }
         const todoItems = this.props.plans.map((value, index) => 
                 <TodoItem 
                     key={value.id}
@@ -58,6 +62,7 @@ class PlanList extends Component {
                     index={index}
                     planType={this.props.planType}
                     selectedDay={this.props.selectedDay}
+                    onPutOff={onPutOff}
                     />
         )
 

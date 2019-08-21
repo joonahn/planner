@@ -80,6 +80,19 @@ export async function changeOrder(planId, order) {
     })
 }
 
+export async function changePlanDate(planId, dateStr) {
+    const url = PREFIX + '/planner_data/' + planId + '/'
+    const formData = new FormData()
+    if (dateStr != null) {
+        formData.append('plan_date', dateStr)
+    }
+    return fetch(url, {
+        method:'PATCH',
+        body: formData,
+        credentials: 'include',
+    })
+}
+
 export async function changeOrders(orderDataList) {
     const url = PREFIX + '/planner_data/change_order/'
     return fetch(url, {

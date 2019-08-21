@@ -102,7 +102,9 @@ class TodoItem extends Component {
     }
     render() {
         const isDuplicableOnDailyPlan = ((!!this.props.selectedDay) && (this.props.planType !== 'daily'))
-        const visibility = isDuplicableOnDailyPlan ? {} : {display:'none'}
+        const duplcateOnDailyPlanVisibility = isDuplicableOnDailyPlan ? {} : {display:'none'}
+        const isPutOffable = ((this.props.planType === 'daily'))
+        const putOffableVisibility = isPutOffable ? {} : {display:'none'}
         
         return (
             <Draggable 
@@ -120,12 +122,17 @@ class TodoItem extends Component {
                                     </Grid.Column>
                                     <Grid.Column width={4} textAlign='center' style={style.column}>
                                         <Icon link onClick={() => this.props.deleteTodo(this.props.planId)} name='close' />
-                                        <Icon link fitted={!isDuplicableOnDailyPlan} onClick={this.onEditIconClick} name='pencil' />
+                                        <Icon link fitted={!(isDuplicableOnDailyPlan || isPutOffable)} onClick={this.onEditIconClick} name='pencil' />
                                         <Icon link 
                                             fitted={isDuplicableOnDailyPlan} 
                                             onClick={() => this.props.onDuplicateOnDailyPlan(this.props.text, this.props.checked)} 
                                             name='calendar plus' 
-                                            style={visibility}/>
+                                            style={duplcateOnDailyPlanVisibility}/>
+                                        <Icon link 
+                                            fitted={isPutOffable} 
+                                            onClick={() => this.props.onPutOff(this.props.planId)} 
+                                            name='hourglass half' 
+                                            style={putOffableVisibility}/>
                                     </Grid.Column>
                                 </Grid.Row>
                             </Grid>
